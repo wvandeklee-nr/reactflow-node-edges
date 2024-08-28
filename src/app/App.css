@@ -1,0 +1,60 @@
+/* Reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+ul[class],
+ol[class] {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+}
+
+/* Utility */
+
+.flow-control > * {
+  margin-bottom: 1rem;
+}
+
+.flow-control > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Application */
+
+.container {
+  display: flex;
+  flex-direction: row;
+  /* margin: 20px; */
+}
+
+.graph {
+  background-color: #f0f0f0;
+  height: 90vh;
+  width: 90vw;
+  text-align: center;
+  padding: 5px;
+  resize: both;
+  overflow: auto;
+}
+
+.panel {
+  border: black 1px solid;
+  padding: 1rem;
+}

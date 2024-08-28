@@ -1,0 +1,19 @@
+.subject-node {
+  text-align: center;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 50%;
+  padding: 0.3rem 0.3rem 0rem 0.3rem;
+}
+
+.subject-node-label {
+  font-size: 0.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+.expand-links {
+  position: relative;
+  background-color: darkolivegreen;
+  border-radius: 50%;
+}

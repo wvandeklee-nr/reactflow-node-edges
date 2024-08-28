@@ -1,45 +1,47 @@
 import { useCallback, useState } from "react";
-
-import { ReactFlowProvider, Node } from "reactflow";
+import { ReactFlowProvider, Node, Edge } from "reactflow";
 import "reactflow/dist/style.css";
+
+import { Subject } from "./Subject";
+import { SubjectData, SubjectRelationship } from "./types";
+import SubjectLink from "./SubjectLink";
+
+import graph1Nodes from "./data/graph-1/initial-nodes";
+import graph1Edges from "./data/graph-1/initial-edges";
+import graph2Nodes from "./data/graph-2/initial-nodes";
+import graph2Edges from "./data/graph-2/initial-edges";
+import graph3Nodes from "./data/graph-3/initial-nodes";
+import graph3Edges from "./data/graph-3/initial-edges";
+import graph4Nodes from "./data/graph-4/initial-nodes";
+import graph4Edges from "./data/graph-4/initial-edges";
+
+import ReactFlowGraph from "../flow/ReactFlowGraph";
 
 import "./App.css";
 
-import { Subject } from "./Subject";
-import { graphMapper, LinkExplorerGraph } from "./graph-mapper";
-import { SubjectData } from "./types";
-import SubjectLink from "./SubjectLink";
-
-import graph1 from "./data/example-graph-1";
-import graph2 from "./data/example-graph-2";
-import graph3 from "./data/example-graph-3";
-import graph4 from "./data/example-graph-4";
-import ReactFlowGraph from "../flow/ReactFlowGraph";
-
 const customNodeTypes = { subject: Subject };
-const customEdgeTypes = { customEdge: SubjectLink };
+const customEdgeTypes = { subjectEdge: SubjectLink };
 
 function ExampleApp() {
-  const [initialNodes, initialEdges] =
-    graphMapper.fromLinkExplorerGraph.toReactFlowGraph(graph1);
+  const [initialNodes, initialEdges] = [graph1Nodes, graph1Edges]
   const [showPanel, setShowPanel] = useState(false);
   const [clickedNode, setClickedNode] = useState<Node<SubjectData>>();
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
 
-  const handleNodeClicked = useCallback((node: Node<SubjectData>) => {
+  const onNodeClickHandler = useCallback((node: Node<SubjectData>) => {
+    console.log("You clicked on:", node)
     setClickedNode(node);
     setShowPanel(true);
   }, []);
 
-  const handleChangeOfGraph = useCallback(
+  const onNodeDoubleClickHandler = useCallback((node: Node<SubjectData>) => {
+    console.log("You double clicked on:", node)
+  }, []);
+
+  const onGraphChangeHandler = useCallback(
     (newGraphId: string) => {
-      const newLinkExplorerGraph: LinkExplorerGraph =
-        getGraphFromSelectedOption(newGraphId);
-      const [newNodes, newEdges] =
-        graphMapper.fromLinkExplorerGraph.toReactFlowGraph(
-          newLinkExplorerGraph
-        );
+      const [newNodes, newEdges] = getGraphFromSelectedOption(newGraphId);
       setNodes(newNodes);
       setEdges(newEdges);
     },
@@ -48,18 +50,18 @@ function ExampleApp() {
 
   function getGraphFromSelectedOption(
     graphSelection: string
-  ): LinkExplorerGraph {
+  ): [Node<SubjectData>[], Edge<SubjectRelationship>[]] {
     switch (graphSelection) {
       case "1":
-        return graph1;
+        return [graph1Nodes, graph1Edges];
       case "2":
-        return graph2;
+        return [graph2Nodes, graph2Edges];
       case "3":
-        return graph3;
+        return [graph3Nodes, graph3Edges];
       case "4":
-        return graph4;
+        return [graph4Nodes, graph4Edges];
       default:
-        return graph1;
+        return [graph1Nodes, graph1Edges];
     }
   }
 
@@ -68,20 +70,21 @@ function ExampleApp() {
       <select
         defaultValue={"1"}
         onChange={(e) => {
-          handleChangeOfGraph(e.target.value);
+          onGraphChangeHandler(e.target.value);
         }}
       >
-        <option value="1">Example 1</option>
-        <option value="2">Example 2</option>
-        <option value="3">Example 3</option>
-        <option value="4">Example 4</option>
+        <option value="1">Small Network</option>
+        <option value="2">Medium Network</option>
+        <option value="3">Larger Network</option>
+        <option value="4">Hairball (351 nodes)</option>
       </select>
       <div className="container">
         <div className="graph">
           <ReactFlowGraph
             initialNodes={nodes}
             initialEdges={edges}
-            onClick={handleNodeClicked}
+            onClick={onNodeClickHandler}
+            onDoubleClick={onNodeDoubleClickHandler}
             nodeTypes={customNodeTypes}
             edgeTypes={customEdgeTypes}
             autoScaleOnChange={false}

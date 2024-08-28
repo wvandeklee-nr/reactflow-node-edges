@@ -17,6 +17,7 @@ interface ReactFlowGraphProps<N, E> {
   nodeTypes?: NodeTypes;
   edgeTypes?: EdgeTypes;
   onClick: (node: Node<N>) => void;
+  onDoubleClick: (node: Node<N>) => void;
   autoScaleOnChange?: boolean;
 }
 
@@ -26,6 +27,7 @@ const ReactFlowGraph = <N, E>({
   nodeTypes,
   edgeTypes,
   onClick,
+  onDoubleClick,
   autoScaleOnChange = true,
 }: ReactFlowGraphProps<N, E>) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -62,6 +64,13 @@ const ReactFlowGraph = <N, E>({
     [highlightNode, onClick]
   );
 
+  const onNodeDoubleClick = useCallback(
+    (_: React.MouseEvent<Element, MouseEvent>, node: Node<N>) => {
+      onDoubleClick(node);
+    },
+    [onDoubleClick]
+  );
+
   const OnPaneClick = useCallback(() => {
     highlightNode();
   }, [highlightNode]);
@@ -80,6 +89,7 @@ const ReactFlowGraph = <N, E>({
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       onNodeClick={onNodeClick}
+      onNodeDoubleClick={onNodeDoubleClick}
       onPaneClick={OnPaneClick}
       fitView
       proOptions={proOptions}

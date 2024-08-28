@@ -21,6 +21,7 @@ export default function SubjectLink({
     targetY,
   });
 
+  /* Labels will appear on the links when the label property is set to something */
   return (
     <>
       <BaseEdge id={id} path={edgePath} />

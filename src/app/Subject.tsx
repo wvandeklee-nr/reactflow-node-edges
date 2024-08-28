@@ -1,8 +1,9 @@
 import { Handle, NodeProps, Position } from "reactflow";
-import "./Subject.css";
-import { SubjectData } from "./types";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
+import { SubjectData } from "./types";
+
+import "./Subject.css";
 
 const nodeSize = 40;
 
